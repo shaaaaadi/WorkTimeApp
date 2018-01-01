@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_new_record"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="12"
+    android:orientation="vertical"
+    android:background="#bb9cafe4"
+
+
+    tools:context="com.example.jubransh.workingtime.AddNewRecordActivity">
+
+    <CalendarView
+        android:id="@+id/appCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7">
+
+    </CalendarView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:weightSum="4">
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/startHour"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="30sp"
+            android:hint="HH"
+            android:maxLength="2"
+            android:nextFocusDown="@+id/startMinute"
+            android:gravity="center" />
+        <EditText
+            android:inputType="number"
+            android:id="@+id/startMinute"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="30sp"
+            android:hint="MM"
+            android:maxLength="2"
+            android:nextFocusDown="@+id/finishHour"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="שעת כניסה"
+            android:gravity="center"
+            android:textSize="27sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:weightSum="4">
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/finishHour"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="30sp"
+            android:hint="HH"
+            android:maxLength="2"
+            android:nextFocusDown="@+id/finishMinute"
+            android:gravity="center" />
+        <EditText
+            android:inputType="number"
+            android:id="@+id/finishMinute"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="30sp"
+            android:hint="MM"
+            android:maxLength="2"
+            android:nextFocusDown="@+id/confirmAdd"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="שעת יציאה"
+            android:gravity="center"
+            android:textSize="27sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <Button
+            android:layout_weight="1"
+            android:text="ביטול"
+            android:id="@+id/cancelAdd"
+            android:textSize="25sp"
+            android:layout_width="0dp"
+            android:background="#bb647cbe"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_weight="1"
+            android:text="אישור"
+            android:id="@+id/confirmAdd"
+            android:textSize="25sp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:background="#bb647cbe"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

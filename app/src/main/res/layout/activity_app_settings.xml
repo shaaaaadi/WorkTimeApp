@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_app_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jubransh.workingtime.AppSettings"
+    android:orientation="vertical"
+    android:weightSum="16">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="30dp"
+        android:textColor="#ffffff"
+        android:background="#000000"
+        android:text="הגדרות בסיסיות"
+        />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchUseNotif"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch" />
+
+                <TextView
+                    android:layout_weight="4"
+                    android:gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="השתמש בהתראות"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:weightSum="5"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchUseCurrentTimeAsFinish"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch" />
+
+
+                <TextView
+                    android:layout_weight="4"
+                    android:gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="השתמש בשעה נוכחית כשעת יציאה"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:weightSum="5"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchShowFixedSalary"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch" />
+
+
+                <TextView
+                    android:layout_weight="4"
+                    android:gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="הצג משכורת נטו"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:weightSum="5"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchShowNotFixedSalary"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch" />
+
+                <TextView
+                    android:layout_weight="4"
+                    android:gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="הצג משכורת ברוטו"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/mailTo"
+                    android:layout_width="0dp"
+                    android:layout_weight="3.5"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_weight="1.5"
+                    android:gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="מייל"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="30dp"
+        android:textColor="#ffffff"
+        android:background="#000000"
+        android:text="הגדרות שכר ויעדים"
+        />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+            <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <EditText
+                    android:id="@+id/textPayment4Hour"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                />
+                <TextView
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="שכר לשעה"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <EditText
+                    android:id="@+id/travelsRefund"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="החזרי נסיעות ליום"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <EditText
+                    android:id="@+id/textMonthlyGoal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="יעד שעות חודשי"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <EditText
+                    android:id="@+id/textCreditPoints"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="נקודות זיכוי"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <EditText
+                    android:id="@+id/textPensionFund"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="קרן פנסיה"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <EditText
+                    android:id="@+id/textCompletingFund"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="קרן השתלמות"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="30dp"
+        android:textColor="#ffffff"
+        android:background="#000000"
+        android:text="ימי עבודה "
+        />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_marginTop="7dp"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום ראשון"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxSunday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום שני"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxMonday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום שלישי"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxTuesday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום רביעי"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxWednesday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום חמישי"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxThursday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום שישי"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxFriday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="9"
+                    android:layout_marginRight="5dp"
+                    android:textSize="20sp"
+                    android:text="יום שבת"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/checkboxSaturday"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:buttonTint="#095c09"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="30dp"
+        android:textColor="#ffffff"
+        android:background="#000000"
+        android:text="הגדרות מיקום"
+        />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/swithUseLocation"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:checked="false"
+                    android:theme="@style/SCBSwitch" />
+
+                <TextView
+                    android:layout_weight="4"
+                    android:gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="השתמש במיקום"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/locationSettingsLayout"
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <Button
+                    android:id="@+id/useCurrentLocationButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:text="השתמש במיקום נוכחי"
+                    android:textSize="18sp"
+                    android:background="#000000"
+                    android:textColor="#ffffff"
+                    />
+                <EditText
+                    android:id="@+id/textLocationRadius"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    />
+
+                <TextView
+                    android:id="@+id/locationRadiusTextView"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="רדיוס"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:id="@+id/useLocationHelpMessage"
+                    android:layout_weight="5"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:hint="כבה השתמש במיקום כדי לערוך את ההגדרות"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

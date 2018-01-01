@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layoutDirection="rtl"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="4dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="4dp"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:background="@drawable/app_background"
+    tools:context="com.example.jubransh.workingtime.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:weightSum="6"
+        android:layout_weight="0.8">
+
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="+"
+            android:textSize="40sp"
+            android:background="#96635f5f"
+            android:visibility="visible"
+            android:id="@+id/addNewRecord" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#96635f5f"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:textSize="40sp"
+                android:background="@drawable/timer"
+                android:id="@+id/openTimerActivity" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#96635f5f"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:textSize="40sp"
+                android:background="@drawable/mail_icon"
+                android:id="@+id/sendReport" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#96635f5f"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:textSize="40sp"
+                android:background="@drawable/calc"
+                android:id="@+id/openCalculator" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#96635f5f"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:textSize="40sp"
+                android:background="@drawable/settings_icon"
+                android:id="@+id/openSettings" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="#96635f5f"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:textSize="40sp"
+                android:background="@drawable/exit"
+                android:id="@+id/exitApp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_weight="0.7">
+        <Spinner
+            android:id="@+id/monthsSpinner"
+            android:background="#bb9cafe4"
+            android:layout_width="match_parent"
+            android:layout_height= "match_parent">
+
+        </Spinner>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7.5"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+
+        <ListView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/daysList"
+            android:background="#bb9cafe4"
+            android:layout_weight="1">
+        </ListView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:weightSum="1"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/allShiftsTotalView"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:background="#bb9cafe4" />
+
+    </LinearLayout>
+
+</LinearLayout>
