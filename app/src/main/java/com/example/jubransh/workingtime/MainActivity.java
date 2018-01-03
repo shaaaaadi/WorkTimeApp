@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,8 +19,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import static android.R.attr.name;
 
 public class MainActivity extends Activity
 {
@@ -49,11 +46,13 @@ public class MainActivity extends Activity
     int selectedMonth, selectedYear;
     Shift[] loadedShifts;
     boolean isToViewFixedSalary, isToViewNotFixedSalary;
-
+    Bundle _bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
-    {//======================================================================================
+    {
+        _bundle = savedInstanceState;
+        //======================================================================================
         //                             On Create Operations
         //======================================================================================
         super.onCreate(savedInstanceState);
@@ -78,25 +77,27 @@ public class MainActivity extends Activity
         //Load month/year shifts from DB
         daysList = (ListView)findViewById(R.id.daysList);
         allShiftsTotal = (TextView)findViewById(R.id.allShiftsTotalView);
-        loadMonthShiftsFromDB(daysList, allShiftsTotal, currentDate.getMonth(), currentDate.getYear());
 
+        loadedShifts = loadMonthShiftsFromDB(daysList, allShiftsTotal, currentDate.getMonth(), currentDate.getYear());
         updateMonthsSpinner();
-
         //Select current month on spinner
         selectCurrentMonth(currentDate.getMonth(), currentDate.getYear());
 
-        //Analyzing the Shifts Status
-        if(settings.getUseNotifications())
+        if( loadedShifts!= null)
         {
-            int[] workDays = settings.getWorkDays();
-            HoursAnalysisResult hAR = HoursCalc.analyzeHours(
-                    workDays,
-                    (int)settings.getMonthlyHourGoal(),
-                    HoursCalc.getAllShiftsTotalTimeAsDouble(loadedShifts),
-                    currentDate.getDay(),
-                    currentDate.getMonth(),
-                    currentDate.getYear());
-            showAnalysisDialog(hAR);
+            //Analyzing the Shifts Status
+            if(settings.getUseNotifications())
+            {
+                int[] workDays = settings.getWorkDays();
+                HoursAnalysisResult hAR = HoursCalc.analyzeHours(
+                        workDays,
+                        (int)settings.getMonthlyHourGoal(),
+                        HoursCalc.getAllShiftsTotalTimeAsDouble(loadedShifts),
+                        currentDate.getDay(),
+                        currentDate.getMonth(),
+                        currentDate.getYear());
+                showAnalysisDialog(hAR);
+            }
         }
 
         addButton = (Button)findViewById(R.id.addNewRecord);
@@ -114,33 +115,35 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v) {
                 //when clicking on the total hours and salary view, details message will appear
-                showHelpDialog(SalaryDetails);
+                Utils.showHelpDialog(MainActivity.this, SalaryDetails, getString(R.string.close));
             }
         });
+        if(monthsSpinner != null)
+        {
+            monthsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    //parsing the date string from from the comboBox to: int month, int year.
+                    String s = parent.getItemAtPosition(position).toString();
+                    String[] selectedDateArray = s.split("/");
+                    if(selectedDateArray.length != 2)
+                        return;
+                    selectedMonth = Integer.valueOf(selectedDateArray[0]);
+                    selectedYear = Integer.valueOf(selectedDateArray[1]);
 
-        monthsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                //parsing the date string from from the comboBox to: int month, int year.
-                String s = parent.getItemAtPosition(position).toString();
-                String[] selectedDateArray = s.split("/");
-                if(selectedDateArray.length != 2)
-                    return;
-                selectedMonth = Integer.valueOf(selectedDateArray[0]);
-                selectedYear = Integer.valueOf(selectedDateArray[1]);
+                    //loading the selected month/year DataBase to the List view
+                    loadedShifts = loadMonthShiftsFromDB(daysList, allShiftsTotal, selectedMonth, selectedYear);
+                }
 
-                //loading the selected month/year DataBase to the List view
-                loadedShifts = loadMonthShiftsFromDB(daysList, allShiftsTotal, selectedMonth, selectedYear);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                //Another interface callback
-                Toast.makeText(getApplicationContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+                    //Another interface callback
+                    Toast.makeText(getApplicationContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
         // attaching event to the Add button click
         addButton.setOnClickListener(new View.OnClickListener()
@@ -201,6 +204,7 @@ public class MainActivity extends Activity
                 Log.v("long clicked","pos: " + pos);
                 String data=(String)arg0.getItemAtPosition(pos);
                 showDeleteDialog(data);
+
                 return true;
             }
 
@@ -211,7 +215,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                String subject = String.format("%s%s/%s", "דוח שעות עבודה לחודש ", selectedMonth, selectedYear);
+                String subject = String.format("%s%s/%s", getString(R.string.hour_report_for_month___), selectedMonth, selectedYear);
                 String body = "";
 
                 for(int i=0; i < loadedShifts.length; i++)
@@ -219,7 +223,7 @@ public class MainActivity extends Activity
                    String row = dBM.getShiftAsStringToView(loadedShifts[i]);
                     body += row + "\n";
                 }
-                body += String.format("%s: %s", "סך הכול שעות לחודש זה", allShiftsTotalTimeStr);
+                body += String.format("%s: %s", getString(R.string.sum_of_all_hours_for_this_month), allShiftsTotalTimeStr);
                 sendEmail(subject, body);
             }
         });
@@ -234,19 +238,23 @@ public class MainActivity extends Activity
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(String.format("%s: %s ?",
-                "האם אתה בטוח שברצונך למחוק את המשמרת הבאה",
+                getString(R.string.are_you_sure_you_wanna_delete_this_shift),
                 shiftRowAsInView))
                 .setCancelable(false)
-                .setPositiveButton("בטוח", new DialogInterface.OnClickListener()
+                .setPositiveButton(getString(R.string.sure), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dBM.deleteRowFromDB(shiftRowAsInView, selectedMonth, selectedYear);
+                        loadedShifts = loadMonthShiftsFromDB(daysList, allShiftsTotal, currentDate.getMonth(), currentDate.getYear());
                         updateMonthsSpinner();
-                        loadMonthShiftsFromDB(daysList, allShiftsTotal, selectedMonth, selectedYear);
+                        selectCurrentMonth(currentDate.getMonth(), currentDate.getYear());
+                        //restart the view
+                        onCreate(_bundle);
+                        return;
                     }
                 })
-                .setNegativeButton("לא", new DialogInterface.OnClickListener()
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -262,55 +270,41 @@ public class MainActivity extends Activity
         if(hAR.MissingHours <= 0.1)
         {
             if(hAR.MissingHours >= -0.1)
-                message = "כל הכבוד את עומד ביעד החודשי שהגדרת, תמשיך ככה";
+                message = getString(R.string.good_status_msg);
             else
                 message = String.format("%s\n%s %s %s %s %s",
-                        "כל הכבוד, אתה עומד בקצב ואפילו יותר",
-                        "בזכות זה שעבדת יותר, תוכל לעבוד כל יום",
+                        getString(R.string.all_respect_you_are_more_than_good),
+                        getString(R.string.as_a_result_you_can_work_starting_from_today___),
                         HoursCalc.convertNumToHourFormat(Math.abs(hAR.NewDailyGoal)),
-                        "במקום: ",
+                        getString(R.string.instead_of),
                         HoursCalc.convertNumToHourFormat(Math.abs(hAR.ExpectedDailyGoal)),
-                        "עד סוף החודש ועדיין תעמוד ביעד שהגדרת");
+                        getString(R.string.till_the_end_of_the_month));
         }
         else
         {
             message = String.format("%s\n%s %s %s %s %s",
-                    "שים לב: אתה לא עומד ביעד של השעות שהגדרת",
-                    "כדי לעמוד ביעד שלך, צריך לעבוד:" ,
+                    getString(R.string.be_carefull_your_are_not_close_to_your_goal),
+                    getString(R.string.if_you_wanna_achive_your_goal_you_should_work____) ,
                     HoursCalc.convertNumToHourFormat(hAR.NewDailyGoal),
-                    "כל יום",
-                    "במקום: ",
+                    getString(R.string.each_day),
+                    getString(R.string.instead_of),
                     HoursCalc.convertNumToHourFormat(hAR.ExpectedDailyGoal));
         }
-        showHelpDialog(message);
-    }
-    private void showHelpDialog(String messageBody)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(messageBody)
-                .setPositiveButton("סגור", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        Utils.showHelpDialog(MainActivity.this, message, getString(R.string.close));
     }
     private void showExitDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("האם אתה בטוח שברצונך לצאת?")
+        builder.setMessage(getString(R.string.exit_dialog_msg))
                 .setCancelable(false)
-                .setPositiveButton("בטוח", new DialogInterface.OnClickListener()
+                .setPositiveButton(getString(R.string.sure), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         exitApplication();
                     }
                 })
-                .setNegativeButton("לא", new DialogInterface.OnClickListener()
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -320,7 +314,6 @@ public class MainActivity extends Activity
         AlertDialog alert = builder.create();
         alert.show();
     }
-
     private Shift[] loadMonthShiftsFromDB(ListView listView, TextView totalTimeTextView, int month, int year)
     {
         //Load From Data Base
@@ -329,10 +322,12 @@ public class MainActivity extends Activity
         {
             if(dBM.errorType == Types.DB_ERROR.CORRUPTED_FILE)
             {
-                showErrorToast("אחד או יותר מקבצי המסד נתונים ריקים מתוכן", true);
+                showErrorToast(getString(R.string.damaged_database_error_msg), true);
                 //Toast.makeText(getApplicationContext(), "Corrupted DataBase File", Toast.LENGTH_LONG).show();
                 return null;
             }
+            showErrorToast("לא נמצאו משמרות לחודש נוכחי", false);
+            return null;
         }
 
         String[] shiftsArrayAsStrings = new String[loadedShifts.length];

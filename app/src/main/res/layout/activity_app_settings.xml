@@ -590,16 +590,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
 
-                <Button
-                    android:id="@+id/useCurrentLocationButton"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                <!--<Button-->
+                    <!--android:id="@+id/useCurrentLocationButton"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="3"-->
+                    <!--android:text="השתמש במיקום נוכחי"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:background="#000000"-->
+                    <!--android:textColor="#ffffff"-->
+                    <!--/>-->
+                <LinearLayout
                     android:layout_weight="3"
-                    android:text="השתמש במיקום נוכחי"
-                    android:textSize="18sp"
-                    android:background="#000000"
-                    android:textColor="#ffffff"
-                    />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"/>
+
                 <EditText
                     android:id="@+id/textLocationRadius"
                     android:layout_width="0dp"

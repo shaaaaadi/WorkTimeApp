@@ -38,7 +38,8 @@ public class AppSettings extends Activity {
     String appSettingsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time_Settings";
     Settings settings;
 
-    SwitchCompat showFixedSalary,
+    SwitchCompat
+            showFixedSalary,
             showNotFixedSalary,
             showCurrentTimeAsFinishTime,
             useNotifications,
@@ -61,6 +62,7 @@ public class AppSettings extends Activity {
             checkboxSaturday;
     TextView useLocationHelpMessage, locationRadiusTextView;
     LinearLayout locationSettingsLayout;
+
     private LocationManager locationManager;
     private LocationListener listener;
 
@@ -210,6 +212,7 @@ public class AppSettings extends Activity {
                 if (isChecked)
                 {
                     configure_GPS(true);
+                    Utils.showHelpDialog(AppSettings.this, getString(R.string.use_location_info), getString(R.string.close));
                 }
                 else
                 {

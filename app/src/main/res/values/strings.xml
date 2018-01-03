@@ -73,4 +73,38 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+
+    <!-- All Application Strings In Hebrew-->
+    <string name="damaged_database_error_msg">אחד או יותר מקבצי מסד הנתונים דפוקים או ריקים מתוכן</string>
+
+    <string name="good_status_msg">כל הכבוד את עומד ביעד החודשי שהגדרת, תמשיך ככה</string>
+
+    <string name="all_respect_you_are_more_than_good">כל הכבוד, אתה עומד בקצב ואפילו יותר</string>
+    <string name="as_a_result_you_can_work_starting_from_today...">בזכות זה שעבדת יותר, תוכל לעבוד כל יום</string>
+    <string name="instead_of">במקום: </string>
+    <string name="till_the_end_of_the_month">עד סוף החודש ועדיין תעמוד ביעד שהגדרת</string>
+
+    <string name="be_carefull_your_are_not_close_to_your_goal">שים לב: אתה לא עומד ביעד של השעות שהגדרת</string>
+    <string name="if_you_wanna_achive_your_goal_you_should_work_...">כדי לעמוד ביעד שלך, צריך לעבוד:</string>
+    <string name="each_day">כל יום</string>
+
+
+    <!-- Dialog Strings For the Application-->
+    <string name="are_you_sure_you_wanna_delete_this_shift">האם אתה בטוח שברצונך למחוק את המשמרת הבאה?</string>
+    <string name="close">סגור</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="sure">בטוח</string>
+    <string name="exit_dialog_msg">האם אתה בטוח שברצונך לצאת? </string>
+
+    <!-- Sending Mail Strings -->
+    <string name="hour_report_for_month___">דוח שעות עבודה לחודש </string>
+    <string name="sum_of_all_hours_for_this_month">סך הכול שעות לחודש זה </string>
+    <string name="sum">סך הכול</string>
+
+
+    <!-- Setting long messages/ warnings-->
+    <string name="use_location_info">כעת הדלקת את שירותי המיקום, מיקום העבודה שלך יכויל לפי מיקום נוכחי. אם אינך נמצא במקום העבודה כרגע, כבה "השתמש במיקום" והפעל את זה שוב כשתהיה במיקום של העבודה. זכור !! תפעיל את זה כשאתה במקום פתוח </string>
+
 </resources>
