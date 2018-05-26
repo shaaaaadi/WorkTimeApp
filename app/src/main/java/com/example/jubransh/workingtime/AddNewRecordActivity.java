@@ -203,7 +203,7 @@ public class AddNewRecordActivity extends Activity
                         backToMainActivity();
                     }
                 })
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener()
+                .setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {

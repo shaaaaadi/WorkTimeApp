@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,13 +16,7 @@ public class TimerActivity extends Activity {
     DateTime currentDate;
     Button startStopTimeBtn;
     TextView appTextView;
-    Types.BUTTON_TYPE BUTTONTYPE;
-    String appSettingsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time_Settings";
-    String appPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time";
-    String startText = "התחל משמרת";
-    String stopText = "סיים משמרת";
-    String afterStartMessage = String.format("%s\n%s","התחלת משמרת חדשה." ,"ברגע שאתה לוחץ על סיים משמרת תתווסף משמרת חדשה לרשימה של המשמרות של החודש הנוכחית");
-    String afterStopMessage = String.format("%s\n%s","אין משמרת פעילה כרגע!" ,"לחץ על התחל משמרת כדי להתחיל משמרת חדשה");
+    Types.BUTTON_TYPE buttonType;
 
     /**
      * Creating all the GUI objects,
@@ -41,7 +34,7 @@ public class TimerActivity extends Activity {
         currentDate = new DateTime();
 
         //create new Instance of data base manager
-        dBM = new DataBaseManager(appPath);
+        dBM = new DataBaseManager(Types.APP_PATH);
 
         //bind view to button
         startStopTimeBtn = (Button)findViewById(R.id.startStopShift);
@@ -50,16 +43,16 @@ public class TimerActivity extends Activity {
         try
         {
             //when loading the activity check if there is started shift
-            sT = new ShiftTimer(appSettingsPath);
+            sT = new ShiftTimer(Types.APP_SETTINGS_PATH);
             if(sT.isStarted())
             {
-                startStopTimeBtn.setText(stopText);
-                appTextView.setText(afterStartMessage);
+                startStopTimeBtn.setText(R.string.stop_shift);
+                appTextView.setText(R.string.after_start_message);
             }
             else
             {
-                startStopTimeBtn.setText(startText);
-                appTextView.setText(afterStopMessage);
+                startStopTimeBtn.setText(R.string.start_shift);
+                appTextView.setText(R.string.after_stop_message);
             }
 
         }
@@ -75,14 +68,17 @@ public class TimerActivity extends Activity {
             public void onClick(View v)
             {
                 //Identify if the button is Start or Stop Button
-                if(startStopTimeBtn.getText().toString().equalsIgnoreCase(startText))
+                if(startStopTimeBtn.getText().toString().equalsIgnoreCase((String) getText(R.string.start_shift)))
                 {
-                    BUTTONTYPE =  Types.BUTTON_TYPE.START_BUTTON;
-                    startStopTimeBtn.setText(stopText);
-                    appTextView.setText(afterStartMessage);
+                    buttonType =  Types.BUTTON_TYPE.START_BUTTON;
+                    startStopTimeBtn.setText(R.string.stop_shift);
+                    appTextView.setText(R.string.after_start_message);
 
                     //Start Process
                     sT.start();
+
+                    //finish the timer activity and back to the main one
+                    backToMainActivity();
                 }
                 else
                 {
@@ -120,22 +116,25 @@ public class TimerActivity extends Activity {
     private void stopShift()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
-        builder.setMessage("האם אתה בטוח שברצונך להפסיק את המשמרת?")
+        builder.setMessage(R.string.stop_shift_verification)
                 .setCancelable(false)
-                .setPositiveButton("הפסק משמרת", new DialogInterface.OnClickListener()
+                .setPositiveButton(R.string.stop_shift, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        BUTTONTYPE =  Types.BUTTON_TYPE.STOP_BUTTON;
-                        startStopTimeBtn.setText(startText);
+                        buttonType =  Types.BUTTON_TYPE.STOP_BUTTON;
+                        startStopTimeBtn.setText(R.string.start_shift);
 
                         String shiftRow = sT.stop();
                         Toast.makeText(getApplicationContext(), "Total Shift Time : "
                                 + shiftRow, Toast.LENGTH_LONG).show();
                         dBM.saveShiftToDataBase(currentDate.getMonth(), currentDate.getYear(), shiftRow);
+
+                        //finish the timer activity and back to the main one
+                        backToMainActivity();
                     }
                 })
-                .setNegativeButton("לא", new DialogInterface.OnClickListener()
+                .setNegativeButton(R.string.NO, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -144,6 +143,7 @@ public class TimerActivity extends Activity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+
     }
 
 }

@@ -88,12 +88,13 @@
     <string name="if_you_wanna_achive_your_goal_you_should_work_...">כדי לעמוד ביעד שלך, צריך לעבוד:</string>
     <string name="each_day">כל יום</string>
 
+    <string name="no_Shifts_for_this_month">לא נמצאו משמרות עבור חודש זה</string>
 
     <!-- Dialog Strings For the Application-->
     <string name="are_you_sure_you_wanna_delete_this_shift">האם אתה בטוח שברצונך למחוק את המשמרת הבאה?</string>
     <string name="close">סגור</string>
     <string name="yes">כן</string>
-    <string name="no">לא</string>
+    <string name="NO">לא</string>
     <string name="sure">בטוח</string>
     <string name="exit_dialog_msg">האם אתה בטוח שברצונך לצאת? </string>
 
@@ -109,5 +110,27 @@
     <!-- AddNewRecordActivity Strings-->
     <string name="missing_fields">נא למלות כל שדות החובה לפני שמירה</string>
     <string name="discard_shift_verify">האם אתה בטוח שברצונך לחזור למסך הראשי מבלי לשמור את המשמרת?</string>
+
+    <!--Timer Activity Strings -->
+    <string name="start_shift">התחל משמרת</string>
+    <string name="stop_shift">הפסק משמרת</string>
+
+    <string name="stop_shift_verification">האם אתה בטוח שברצונך להפסיק את המשמרת?</string>
+
+    <string name="after_start_message">התחלת משמרת חדשה. ברגע שאתה לוחץ על סיים משמרת תתווסף משמרת חדשה לרשימה של המשמרות של החודש הנוכחית </string>
+    <string name="after_stop_message">אין משמרת פעילה כרגע לחץ על התחל משמרת כדי להתחיל משמרת חדשה  </string>
+
+
+    <!--Salary Details: -->
+    <string name="NotFixedSalary">משכורת ברוטו:      </string>
+    <string name="TravelFund">תשלומי נסיעות:      </string>
+    <string name="PensionFund">קרן פנסיה:      </string>
+    <string name="CompletionFund">קרן השתלמות:      </string>
+    <string name="IncomeTax">מס הכנסה:      </string>
+    <string name="HealthTax">מס בריאות:      </string>
+    <string name="NationalInsurance">ביטוח לאומי:      </string>
+    <string name="FixedSalary">משכורת נטו:      </string>
+
+
 
 </resources>

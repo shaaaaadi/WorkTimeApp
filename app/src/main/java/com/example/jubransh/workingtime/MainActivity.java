@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,20 +36,17 @@ import android.widget.Toast;
  */
 public class MainActivity extends Activity
 {
+    ImageButton openTimerActivity;
     Button  addButton,
-            openTimerActivity,
             exitAppButton,
             openCalcButton,
             sendReportByMail,
             openSettingsButton;
-
     ListView daysList;
     Spinner monthsSpinner;
     TextView allShiftsTotal;
     ArrayAdapter itemsAdapter;
     String SalaryDetails;
-    String appPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time";
-    String appSettingsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time_Settings";
     String allShiftsTotalTimeStr;
 
     SalaryParts salaryParts;
@@ -77,8 +74,20 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //before loading the activity check if there is started shift
+        ShiftTimer sT = null;
+        try
+        {
+            sT = new ShiftTimer(Types.APP_SETTINGS_PATH);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
         //Create Settings Instance
-        settings = new Settings(appSettingsPath);
+        settings = new Settings(Types.APP_SETTINGS_PATH);
 
         //pull setting to vars
         isToViewFixedSalary = settings.getShowFixedSalary();
@@ -88,10 +97,10 @@ public class MainActivity extends Activity
         currentDate = new DateTime();
 
         //if application directory does not exists, create one
-        FileManager.createNewDir(appPath);
+        FileManager.createNewDir(Types.APP_PATH);
 
         //Create Instance Of Data Base Manager
-        dBM = new DataBaseManager(appPath);
+        dBM = new DataBaseManager(Types.APP_PATH);
 
         //Load month/year shifts from DB
         daysList = (ListView)findViewById(R.id.daysList);
@@ -99,6 +108,7 @@ public class MainActivity extends Activity
 
         loadedShifts = loadMonthShiftsFromDB(daysList, allShiftsTotal, currentDate.getMonth(), currentDate.getYear());
         updateMonthsSpinner();
+
         //Select current month on spinner
         selectCurrentMonth(currentDate.getMonth(), currentDate.getYear());
 
@@ -123,11 +133,17 @@ public class MainActivity extends Activity
         openSettingsButton = (Button)findViewById(R.id.openSettings);
         sendReportByMail = (Button)findViewById(R.id.sendReport);
         openCalcButton = (Button)findViewById(R.id.openCalculator);
-        openTimerActivity = (Button)findViewById(R.id.openTimerActivity);
+        openTimerActivity = (ImageButton) findViewById(R.id.openTimerActivity);
         exitAppButton = (Button)findViewById(R.id.exitApp);
 
+        //Set Timer Button Color according to what it's status (started or not)
+        if (sT == null || sT.isStarted() == false)
+            openTimerActivity.setBackgroundResource(R.drawable.standard_button_layout);
+        else
+            openTimerActivity.setBackgroundResource(R.drawable.red_button_layout);
+
         //======================================================================================
-    //                                   Attaching Events
+        //                                   Attaching Events
         //======================================================================================
         //Attach an event when clicking on the view of the total horus/summary
         allShiftsTotal.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +206,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                openTimerActivity(); //remove comment
+                openTimerActivity();
             }
         });
 
@@ -283,7 +299,7 @@ public class MainActivity extends Activity
                         return;
                     }
                 })
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener()
+                .setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -345,7 +361,7 @@ public class MainActivity extends Activity
                         exitApplication();
                     }
                 })
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener()
+                .setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
@@ -375,7 +391,7 @@ public class MainActivity extends Activity
                 //Toast.makeText(getApplicationContext(), "Corrupted DataBase File", Toast.LENGTH_LONG).show();
                 return null;
             }
-            showErrorToast("לא נמצאו משמרות לחודש נוכחי", false);
+            showErrorToast((String)getString(R.string.no_Shifts_for_this_month), false);
             return null;
         }
 
@@ -398,27 +414,27 @@ public class MainActivity extends Activity
         double totalHours = HoursCalc.getAllShiftsTotalTimeAsDouble(loadedShifts);
 
         //Create New Instance of Salary Calc
-        SalaryCalc sC = new SalaryCalc(appSettingsPath, loadedShifts.length);
+        SalaryCalc sC = new SalaryCalc(Types.APP_SETTINGS_PATH, loadedShifts.length);
         salaryParts = sC.calculateSalary(totalHours);
 
         //update the Salary details String
         SalaryDetails = String.format
-                ("%s%.2f\n%s%.2f\n%s%.2f\n%s%.2f\n%s%.2f\n%s%.2f\n%s%.2f\n%s%.2f\n\n",
-                        "משכורת ברוטו:      ",
+                ("%s\t\t%.2f\n%s\t\t%.2f\n%s\t\t%.2f\n%s\t\t%.2f\n%s\t\t%.2f\n%s\t\t%.2f\n%s\t\t%.2f\n%s\t\t%.2f\n\n",
+                        getString(R.string.NotFixedSalary),
                         salaryParts.NotFixedSalary,
-                        "תשלומי נסיעות:     ",
+                        getString(R.string.TravelFund),
                         salaryParts.TravelFund,
-                        "קרן פנסיה:         ",
+                        getString(R.string.PensionFund),
                         salaryParts.PensionFund,
-                        "קרן השתלמות:       ",
+                        getString(R.string.CompletionFund),
                         salaryParts.CompletionFund,
-                        "מס הכנסה:          ",
+                        getString(R.string.IncomeTax),
                         salaryParts.IncomeTax,
-                        "מס בריאות:         ",
+                        getString(R.string.HealthTax),
                         salaryParts.HealthTax,
-                        "ביטוח לאומי:       ",
+                        getString(R.string.NationalInsurance),
                         salaryParts.NationalInsurance,
-                        "משכורת נטו:      ",
+                        getString(R.string.FixedSalary),
                         salaryParts.FixedSalary
                         );
 
@@ -432,7 +448,7 @@ public class MainActivity extends Activity
                 "סך הכול:",
                 allShiftsTotalTimeStr,
                 "שעות",
-                isToViewNotFixedSalary ? "שכר ברוטו:" : "",
+                isToViewNotFixedSalary ? getString(R.string.NotFixedSalary): "",
                 isToViewNotFixedSalary ? notFixedSalaryStr : "",
                 isToViewFixedSalary ? isToViewNotFixedSalary ? "   |   שכר נטו:" : "שכר נטו:" : "",
                 isToViewFixedSalary ? fixedSalaryStr : ""));
@@ -562,4 +578,5 @@ public class MainActivity extends Activity
         toast.setView(layout);
         toast.show();
     }
+
 }
