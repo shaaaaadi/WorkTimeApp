@@ -1,10 +1,11 @@
 package com.example.jubransh.workingtime;
 
-import android.content.Intent;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * This class is a a Data Base Manager
@@ -50,6 +51,67 @@ public class DataBaseManager
         catch (Exception e)
         {
             return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * This method loads all the shifts of all months/years from database and check if shift conflict with on of them
+     * @param shift the shift we want to check if it valid number of the wanted month
+     * @return boolean. True if the shift is valid and false otherwise.
+     */
+    public boolean isValidShift(Shift shift)
+    {
+        File[] allDbFiles = new File(mAppWorkDirPath).listFiles();
+        if(allDbFiles.length == 0)
+            return true;
+
+        for(File dBFile : allDbFiles)
+        {
+            //Load relevant Month/Year
+            String[] allShiftsAsStrings = FileManager.ReadAllLines(dBFile);
+
+            if(allShiftsAsStrings == null)
+                return true;
+
+            //Convert All Lines To Shift Format
+            Shift[] dbShifts = new Shift[allShiftsAsStrings.length];
+            for(int i=0; i< allShiftsAsStrings.length; i++)
+            {
+                dbShifts[i] = convertStringToShift(allShiftsAsStrings[i]);
+                int shiftStartTime = shift.StartHour*100 + shift.StartMinute;
+                int shiftFinishTime = shift.FinishHour*100 + shift.FinishMinute;
+
+                int dbShiftStartTime = dbShifts[i].StartHour*100 + dbShifts[i].StartMinute;
+                int dbShiftFinishTime = dbShifts[i].FinishHour*100 + dbShifts[i].FinishMinute;
+
+                if(shift.ShiftDate.isTheSameDay(dbShifts[i].ShiftDate)) {
+                    if (shiftStartTime < dbShiftFinishTime) {
+                        if (shiftStartTime > dbShiftStartTime) {
+                            return false;
+                        }
+                        else if (shiftFinishTime > dbShiftFinishTime){
+                            return false;
+                        }
+                    }
+
+                    if (shiftStartTime < dbShiftStartTime){
+                        if(shiftFinishTime > dbShiftStartTime){
+                            return false;
+                        }
+                    }
+                    else {
+                        if(shiftStartTime == dbShiftStartTime)
+                            return false;
+                        else {
+                            if(shiftStartTime < dbShiftFinishTime)
+                                return false;
+                        }
+                    }
+                }
+
+            }
         }
 
         return true;
@@ -260,7 +322,7 @@ public class DataBaseManager
             return null;
 
         shift.StartHour = Integer.valueOf(startTimeArr[0]);
-        shift.startMinute = Integer.valueOf(startTimeArr[1]);
+        shift.StartMinute = Integer.valueOf(startTimeArr[1]);
 
         //parse the finish time string to integers
         String[] finishTimeArr = items[2].split(":");
@@ -268,7 +330,7 @@ public class DataBaseManager
             return null;
 
         shift.FinishHour = Integer.valueOf(finishTimeArr[0]);
-        shift.finishMinute = Integer.valueOf(finishTimeArr[1]);
+        shift.FinishMinute = Integer.valueOf(finishTimeArr[1]);
 
         //parse the total hour and put in the Shift object
         double totalHours = HoursCalc.convertHourFormatToDouble(items[3]);
@@ -350,8 +412,8 @@ public class DataBaseManager
             newArray[tempArray[i]].finishTime = shiftsArray[i].finishTime;
             newArray[tempArray[i]].totalTime = shiftsArray[i].totalTime;
             newArray[tempArray[i]].FinishHour = shiftsArray[i].FinishHour;
-            newArray[tempArray[i]].finishMinute = shiftsArray[i].finishMinute;
-            newArray[tempArray[i]].startMinute = shiftsArray[i].startMinute;
+            newArray[tempArray[i]].FinishMinute = shiftsArray[i].FinishMinute;
+            newArray[tempArray[i]].StartMinute = shiftsArray[i].StartMinute;
             newArray[tempArray[i]].StartHour = shiftsArray[i].StartHour;
         }
         return newArray;

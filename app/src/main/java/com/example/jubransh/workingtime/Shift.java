@@ -17,9 +17,9 @@ public class Shift
 {
     public DateTime ShiftDate;
     public int StartHour;
-    public int startMinute;
+    public int StartMinute;
     public int FinishHour;
-    public int finishMinute;
+    public int FinishMinute;
     public String StartTime;
     public String finishTime;
     public double totalTime;

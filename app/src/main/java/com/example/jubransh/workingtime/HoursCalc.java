@@ -18,9 +18,9 @@ public final class HoursCalc
         double diff = finishHour - startHour;
         int minutesDiff = finishMinute - startMinute;
         double minutesDiffAsFloat = (Math.abs(minutesDiff))/((double)60);
-        if(minutesDiff > 0) // finishminute > startMinute
+        if(minutesDiff > 0) // finishminute > StartMinute
             diff += minutesDiffAsFloat;
-        else                //startMinute > finishMinute
+        else                //StartMinute > FinishMinute
             diff -= minutesDiffAsFloat;
 
         return diff;

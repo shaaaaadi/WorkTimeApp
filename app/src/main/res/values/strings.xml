@@ -96,6 +96,7 @@
     <string name="yes">כן</string>
     <string name="NO">לא</string>
     <string name="sure">בטוח</string>
+    <string name="got_it">הבנתי</string>
     <string name="exit_dialog_msg">האם אתה בטוח שברצונך לצאת? </string>
 
     <!-- Sending Mail Strings -->
@@ -106,6 +107,7 @@
 
     <!-- Setting long messages/ warnings-->
     <string name="use_location_info">כעת הדלקת את שירותי המיקום, מיקום העבודה שלך יכויל לפי מיקום נוכחי. אם אינך נמצא במקום העבודה כרגע, כבה "השתמש במיקום" והפעל את זה שוב כשתהיה במיקום של העבודה. זכור !! תפעיל את זה כשאתה במקום פתוח </string>
+    <string name="conflicting_shift_message">משמרת זו מתנגשת עם משמרת שקיימת כבר במסד הנתונים</string>
 
     <!-- AddNewRecordActivity Strings-->
     <string name="missing_fields">נא למלות כל שדות החובה לפני שמירה</string>

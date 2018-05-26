@@ -76,6 +76,15 @@ public class DateTime
     }
 
     /**
+     * Check if The Dame Date Getter
+     * @return boolean.
+     */
+    public boolean isTheSameDay(DateTime dT)
+    {
+        return dT.getYear() == getYear() && dT.getMonth() == getMonth() && dT.getDay() == getDay();
+    }
+
+    /**
      * mDay Getter
      * @return int, mDay.
      */

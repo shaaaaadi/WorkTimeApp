@@ -161,13 +161,19 @@ public class AddNewRecordActivity extends Activity
 
         // fill the shift object with the data taken from the GUI
         shift.StartHour = startHour;
-        shift.startMinute = startMinute;
+        shift.StartMinute = startMinute;
         shift.FinishHour = finishHour;
-        shift.finishMinute = finishMinute;
+        shift.FinishMinute = finishMinute;
         shift.totalTime = HoursCalc.getDifferenceAsFloat(startHour, startMinute, finishHour, finishMinute);
         shift.ShiftDate = new DateTime(_selectedDate.mDay, _selectedDate.mMonth, _selectedDate.mYear);//selectedDate;
         shift.StartTime = String.format("%02d:%02d", startHour, startMinute);
         shift.finishTime = String.format("%02d:%02d", finishHour, finishMinute);
+
+        //Check if Valid Shift (not conflict with some shift in database) Before adding it to the dataBase
+        if(!dBM.isValidShift(shift)){
+            Utils.showHelpDialog(AddNewRecordActivity.this, getString(R.string.conflicting_shift_message), getString(R.string.got_it));
+            return false;
+        }
 
         //convert the Shift Object to data base string
         String rowString = DataBaseManager.convertShiftToString(shift);

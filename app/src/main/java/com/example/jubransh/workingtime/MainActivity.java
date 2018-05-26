@@ -250,7 +250,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                String subject = String.format("%s%s/%s", getString(R.string.hour_report_for_month___), selectedMonth, selectedYear);
+                String subject = String.format("%s %s/%s", getString(R.string.hour_report_for_month___), selectedMonth, selectedYear);
                 String body = "";
 
                 for(int i=0; i < loadedShifts.length; i++)
