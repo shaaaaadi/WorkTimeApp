@@ -319,7 +319,7 @@ public class DataBaseManager
      * @param shiftsArray as Shift[]
      * @return Shift[] sorted shifts
      */
-    private Shift[] sortShiftsArray(Shift[] shiftsArray)
+    private Shift[] sortShiftsArray_old(Shift[] shiftsArray)
     {
         Shift[] newArray = new Shift[shiftsArray.length];
         int[] tempArray = new int[shiftsArray.length];
@@ -357,6 +357,24 @@ public class DataBaseManager
         return newArray;
     }
 
+    private Shift[] sortShiftsArray(Shift[] shiftsArray)
+    {
+        //Bubble sorting
+        int n = shiftsArray.length;
+        Shift temp = new Shift();
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < (n - i); j++) {
+                if (shiftsArray[j - 1].ShiftDate.getDay() > shiftsArray[j].ShiftDate.getDay()) {
+                    //swap elements
+                    temp = shiftsArray[j - 1];
+                    shiftsArray[j - 1] = shiftsArray[j];
+                    shiftsArray[j] = temp;
+                }
+
+            }
+        }
+        return shiftsArray;
+    }
     /**
      * This method is responsible to sort the files names (the database files names)
      * this method is sorting the files according to the date (name) of the file
