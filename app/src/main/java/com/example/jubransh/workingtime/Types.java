@@ -1,11 +1,12 @@
 package com.example.jubransh.workingtime;
 
-import java.sql.Struct;
-
 /**
- * Created by jubransh on 11/18/2016.
+ * Static class contains all the enums should be used in the application activities and classed
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
-
 public final class Types
 {
     public enum DB_ERROR
@@ -16,6 +17,4 @@ public final class Types
                             ILLEGAL_FILE_FORMAT
                         };
     public enum BUTTON_TYPE {START_BUTTON, STOP_BUTTON};
-    public  enum GENGER {MALE, FEMALE};
-
 }

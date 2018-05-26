@@ -7,34 +7,19 @@ import java.io.File;
 
 public class Settings
 {
-    //Private Members
-    boolean _isToUseNotifications;
-    boolean _showFixedSalary;
-    boolean _ShowNotFixedSalary;
-    boolean _useCurrentTimeAsFinishTime;
-    double _payment4Hour;
-    double _creditPoints;
-    double _pensionFund;
-    double _monthlyHourGoal;
-    double _completionFund;
-
-
-    File _settingsFile;
-    String _settingsFilePath;
+    File mSettingsFile;
+    String mSettingsFilePath;
 
     Settings(String appSettingsPath)
     {
         //if settings directory does not exists, create one
         FileManager.createNewDir(appSettingsPath);
 
-        _settingsFilePath = appSettingsPath + "/" + "AppConfig.cfg";
+        mSettingsFilePath = appSettingsPath + "/" + "AppConfig.cfg";
         if(FileManager.isFileExists(appSettingsPath, "AppConfig.cfg") == false)
-            _settingsFile = CreateNewSettingsFile(appSettingsPath, "AppConfig.cfg");
+            mSettingsFile = CreateNewSettingsFile(appSettingsPath, "AppConfig.cfg");
         else
-            _settingsFile = new File(_settingsFilePath);
-
-        //String perH = readValue("PaymentForHour");
-        //editValue("UserName", "Shadi");
+            mSettingsFile = new File(mSettingsFilePath);
     }
 
     //=============================== Getters & Setters =================================
@@ -145,9 +130,6 @@ public class Settings
     {
         editValue("UseNotifications", useNotifications ?"True":"False");
     }
-    //LocationRadius
-
-
 
     public boolean getShowFixedSalary()
     {
@@ -195,7 +177,7 @@ public class Settings
     //===============================  Private Methods  ===================================
     private boolean editValue(String item, String val)
     {
-        String[] settingsLines = FileManager.ReadAllLines(_settingsFile);
+        String[] settingsLines = FileManager.ReadAllLines(mSettingsFile);
         int indexOfItem = getIndexOfItem(settingsLines, item);
         if(indexOfItem == -1)
             return false;
@@ -204,13 +186,13 @@ public class Settings
         String lineAfterEditing = String.format("<%s>%s</%s>", item, val, item);
         settingsLines[indexOfItem] = lineAfterEditing;
 
-        FileManager.deleteAllData(_settingsFile);
-        FileManager.writeAllLines(_settingsFile, settingsLines);
+        FileManager.deleteAllData(mSettingsFile);
+        FileManager.writeAllLines(mSettingsFile, settingsLines);
         return true;
     }
     private String readValue(String item)
     {
-        String[] settingsLines = FileManager.ReadAllLines(_settingsFile);
+        String[] settingsLines = FileManager.ReadAllLines(mSettingsFile);
         if(settingsLines == null)
             return null;
         int indexOfItem = getIndexOfItem(settingsLines, item);
@@ -229,7 +211,7 @@ public class Settings
     }
     private File CreateNewSettingsFile(String location, String fileName)
     {
-        File sF = null;
+        File sF;
         try
         {
             sF = FileManager.createNewFile(location, fileName);

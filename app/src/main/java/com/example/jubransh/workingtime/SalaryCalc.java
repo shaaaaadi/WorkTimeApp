@@ -1,33 +1,39 @@
 package com.example.jubransh.workingtime;
 
 /**
- * Created by jubransh on 12/31/2016.
+ * This class is salary calculator class
+ * this class uses all salary components from settings database to calculate the final salary
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
 
 public class SalaryCalc
 {
-    int _shiftsAmount;
-    Settings _appSettings;
-    double _payment4Hour, _pensionFund, _travelsRefund, _creditPoints, _completionFund;
+    int mShiftsAmount;
+    Settings mAppSettings;
+    double mPayment4Hour, mPensionFund, mTravelsRefund, mCreditPoints, mCompletionFund;
 
     public SalaryCalc(String _appSettingsPath, int shiftsAmount)
     {
-
-        _shiftsAmount = shiftsAmount;
-        _appSettings = new Settings(_appSettingsPath);
-        _payment4Hour = _appSettings.getPay4Hour();
-        _pensionFund = _appSettings.getPensionFund();
-        _creditPoints = _appSettings.getCreditPoints();
-        _completionFund = _appSettings.getCompletionFund();
-        _travelsRefund = _appSettings.getTravelsRefund();
+        mShiftsAmount = shiftsAmount;
+        mAppSettings = new Settings(_appSettingsPath);
+        mPayment4Hour = mAppSettings.getPay4Hour();
+        mPensionFund = mAppSettings.getPensionFund();
+        mCreditPoints = mAppSettings.getCreditPoints();
+        mCompletionFund = mAppSettings.getCompletionFund();
+        mTravelsRefund = mAppSettings.getTravelsRefund();
     }
+
+
     public SalaryParts calculateSalary(double totalHours)
     {
         SalaryParts sP = new SalaryParts();
-        sP.TravelFund = _shiftsAmount * _travelsRefund;
-        sP.NotFixedSalary = sP.TravelFund + _payment4Hour * totalHours;
-        sP.PensionFund = (_pensionFund/100) * sP.NotFixedSalary;
-        sP.CompletionFund = (_completionFund/100) * sP.CompletionFund;
+        sP.TravelFund = mShiftsAmount * mTravelsRefund;
+        sP.NotFixedSalary = sP.TravelFund + mPayment4Hour * totalHours;
+        sP.PensionFund = (mPensionFund /100) * sP.NotFixedSalary;
+        sP.CompletionFund = (mCompletionFund /100) * sP.CompletionFund;
         sP.NationalInsurance =  calcNationalInsurance( sP.NotFixedSalary);
         sP.HealthTax =          calcHealthTax(sP.NotFixedSalary); // Not Final
         sP.IncomeTax = calcTax(sP.NotFixedSalary);
@@ -40,6 +46,12 @@ public class SalaryCalc
                         - sP.IncomeTax;
         return sP;
     }
+
+    /**
+     * calculating the value of the Tax from the not fixed salary
+     * @param notFixedSalary
+     * @return double, the tax amount.
+     */
     private double calcTax(double notFixedSalary)
     {
         double tax = 0;
@@ -68,6 +80,12 @@ public class SalaryCalc
         return tax;
 
     }
+
+    /**
+     * calculating the value of the National Insurance Tax from the not fixed salary
+     * @param notFixedSalary
+     * @return double, the tax amount.
+     */
     private double calcNationalInsurance(double notFixedSalary)
     {
         double tax = 0;
@@ -84,6 +102,12 @@ public class SalaryCalc
             tax = level1 * level1Tax + (level2 - level1) * level2Tax;
         return  tax;
     }
+
+    /**
+     * calculating the value of the Health Insurance Tax from the not fixed salary
+     * @param notFixedSalary
+     * @return double, the tax amount.
+     */
     private double calcHealthTax(double notFixedSalary)
     {
         double tax = 0;

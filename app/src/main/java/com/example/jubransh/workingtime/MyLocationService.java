@@ -24,11 +24,11 @@ import android.widget.Toast;
 
 public class MyLocationService extends Service
 {
-    DateTime currentDate;
-    DataBaseManager dBM;
-    String appSettingsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time_Settings";
-    String appPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time";
-    Settings s;
+    DateTime mCurrentDate;
+    DataBaseManager mDBM;
+    String mAppSettingsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time_Settings";
+    String mAppPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time";
+    Settings mSettings;
     double allowedRadius;
     int locationCheckerInterval = 5000;
     private static final int TODO = 1;
@@ -47,13 +47,6 @@ public class MyLocationService extends Service
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             Toast.makeText(getApplicationContext(), "No Permissions", Toast.LENGTH_SHORT).show();
             return START_NOT_STICKY;
         }
@@ -67,19 +60,19 @@ public class MyLocationService extends Service
     public void onCreate()
     {
         super.onCreate();
-        s = new Settings(appSettingsPath);
-        allowedRadius = s.getLocationRadius();
+        mSettings = new Settings(mAppSettingsPath);
+        allowedRadius = mSettings.getLocationRadius();
 
         //create new Instance of data base manager
-        dBM = new DataBaseManager(appPath);
+        mDBM = new DataBaseManager(mAppPath);
 
         //get current date
-        currentDate = new DateTime();
+        mCurrentDate = new DateTime();
 
         //Create new Shift Timer Instance
         try
         {
-            sT = new ShiftTimer(appSettingsPath);
+            sT = new ShiftTimer(mAppSettingsPath);
         }
         catch (Exception e)
         {
@@ -114,8 +107,6 @@ public class MyLocationService extends Service
                             return;
                         sT.start();
                         Toast.makeText(MyLocationService.this, " you Entered The Work Dis = " + "distance", Toast.LENGTH_SHORT).show();
-                        //isUserWasInWork = true;
-                        //isUserWasOutOfWork = false;
                     }
                     else
                     {
@@ -130,8 +121,6 @@ public class MyLocationService extends Service
                             return;
                         stopShift();
                         Toast.makeText(MyLocationService.this, "you Got Out From Work Dis = " + distance, Toast.LENGTH_SHORT).show();
-                        //isUserWasInWork = false;
-                        //isUserWasOutOfWork = true;
                     }
                     else
                     {
@@ -211,7 +200,7 @@ public class MyLocationService extends Service
                         String shiftRow = sT.stop();
                         Toast.makeText(getApplicationContext(), "Total Shift Time : "
                                 + shiftRow, Toast.LENGTH_LONG).show();
-                        dBM.saveShiftToDataBase(currentDate.getMonth(), currentDate.getYear(), shiftRow);
+                        mDBM.saveShiftToDataBase(mCurrentDate.getMonth(), mCurrentDate.getYear(), shiftRow);
                     }
                 })
                 .setNegativeButton("לא", new DialogInterface.OnClickListener()

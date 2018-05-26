@@ -1,24 +1,41 @@
 package com.example.jubransh.workingtime;
 
+import android.content.Intent;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jubransh on 11/16/2016.
+ * This class is a a Data Base Manager
+ *the data base of the application is located into files into the android device
+ * This class is responsible to save, edit, delete file, raws or data from those files
+ * This file uses the FileManager Class to perform the operations above
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
+
 
 public class DataBaseManager
 {
-    public String _appWorkDirPath;
-    Types.DB_ERROR errorType;
-    File _dbFile;
+    public String mAppWorkDirPath;
+    Types.DB_ERROR mErrorType;
+    File mDbFile;
 
     public DataBaseManager(String appWorkingDirPath)
     {
-        errorType = Types.DB_ERROR.NO_ERROR;
-        _appWorkDirPath = appWorkingDirPath;
+        mErrorType = Types.DB_ERROR.NO_ERROR;
+        mAppWorkDirPath = appWorkingDirPath;
     }
+    /**
+     * This method saves new raw to the database using the FileManager (a Final Class)
+     * @param month the month number
+     * @param year the year number
+     * @param shiftRow the string should be saved into the database file of the file: month/year.txt
+     * @return boolean. True if success, else false.
+     */
     public boolean saveShiftToDataBase(int month, int year, String shiftRow)
     {
         String monthStr = DateTime.getMonthString(month);
@@ -27,8 +44,8 @@ public class DataBaseManager
         {
             //Create Month DB file if not exists
             String currentMonthFileName =  String.format("%s_%d.txt",monthStr, year);
-            _dbFile = FileManager.createNewFile(_appWorkDirPath, currentMonthFileName);
-            FileManager.writeLine(_dbFile, shiftRow);
+            mDbFile = FileManager.createNewFile(mAppWorkDirPath, currentMonthFileName);
+            FileManager.writeLine(mDbFile, shiftRow);
         }
         catch (Exception e)
         {
@@ -37,6 +54,12 @@ public class DataBaseManager
 
         return true;
     }
+    /**
+     * This method loads all the shifts of specific month/year from database
+     * @param month the month number of the wanted month
+     * @param year the year number of the wanted year
+     * @return Shift[]. Array of all the shifts of the wanted month/year as Shift objects.
+     */
     public Shift[] loadMonthShifts(int month, int year)
     {
         String monthStr = DateTime.getMonthString(month);
@@ -44,10 +67,10 @@ public class DataBaseManager
         String[] allShiftsAsStrings = null;
         Shift[] shiftsToReturn = null;
 
-        File[] allDbFiles = new File(_appWorkDirPath).listFiles();
+        File[] allDbFiles = new File(mAppWorkDirPath).listFiles();
         if(allDbFiles.length == 0)
         {
-            errorType = Types.DB_ERROR.DB_FILE_NOT_FOUND;
+            mErrorType = Types.DB_ERROR.DB_FILE_NOT_FOUND;
             return null;
         }
         for(File dBFile : allDbFiles)
@@ -67,7 +90,7 @@ public class DataBaseManager
                     shiftsToReturn[i] = convertStringToShift(allShiftsAsStrings[i]);
                     if(shiftsToReturn[i] == null)
                     {
-                        errorType = Types.DB_ERROR.CORRUPTED_FILE;
+                        mErrorType = Types.DB_ERROR.CORRUPTED_FILE;
                         return null;
                     }
                 }
@@ -81,9 +104,18 @@ public class DataBaseManager
 
         //return shiftsToReturn;
     }
+
+    /**
+     * This method loads all the non-empty database files in string format
+     * for example, if database has 2 month files
+     *      - December_2017.txt
+     *      - Januray_2018.txt
+     * the method should return array of 2 strings => [12/2017, 01/2018]
+     * @return String[]. Array of month/year as numeric (see the explaining above)
+     */
     public String[] loadAllFilesNamesAsNumeric()
     {
-        File[] allDbFiles = new File(_appWorkDirPath).listFiles();
+        File[] allDbFiles = new File(mAppWorkDirPath).listFiles();
         List<String> filesNamesToReturn = new ArrayList<String>();
         //String[] filesNamesToReturn = new String[allDbFiles.length];
         for(int i=0; i<allDbFiles.length; i++)
@@ -103,6 +135,14 @@ public class DataBaseManager
         return sortFilesNames(filesNamesToReturn.toArray(new String[filesNamesToReturn.size()]));
         //return filesNamesToReturn;
     }
+
+    /**
+     * This method deletes specific shift from the database
+     * @param month the month number of the wanted month
+     * @param year the year number of the wanted year
+     * @param rowToDelete the wanted shift to be deleted (as string)
+     * @return nothing.
+     */
     public void deleteRowFromDB(String rowToDelete, int month, int year)
     {
         Shift[] monthShifts = loadMonthShifts(month, year);
@@ -114,10 +154,10 @@ public class DataBaseManager
         String[] allShiftsAsStrings = null;
         Shift[] shiftsToReturn = null;
 
-        File[] allDbFiles = new File(_appWorkDirPath).listFiles();
+        File[] allDbFiles = new File(mAppWorkDirPath).listFiles();
         if(allDbFiles.length == 0)
         {
-            errorType = Types.DB_ERROR.DB_FILE_NOT_FOUND;
+            mErrorType = Types.DB_ERROR.DB_FILE_NOT_FOUND;
             return;
         }
         for(File dBFile : allDbFiles)
@@ -141,19 +181,13 @@ public class DataBaseManager
                 FileManager.writeLine(newFile, shift);
         }
     }
-    //For Example: if method receive 11/2016 it should returns November_2016
-    public static String convertNumericMonthYearToString(String numericMonthYear)
-    {
-        String[] items = numericMonthYear.split("/");
-        if(items.length != 2)
-        {
-            return null;
-        }
-        String month = DateTime.getMonthString(Integer.valueOf(items[0]));
-        int year = Integer.valueOf(items[1]);
-        return String.format("%s/%d", month, year);
-    }
-    //For Example: if method receive November_2016 it should returns 11/2016
+
+    /**
+     * This method converts the month/year to int string to be saved to the data base
+     * For Example: if method receive November_2016 it should returns 11/2016
+     * @param monthYearAsString the name of the database file w/o extension
+     * @return String (see explaining above).
+     */
     public static String convertMonthYearToNumericString(String monthYearAsString)
     {
         try
@@ -173,17 +207,31 @@ public class DataBaseManager
         }
 
     }
+
+    /**
+     * This method converts Shift object to formatted string
+     * this method should be used to parse shift to a database format
+     * @param shiftStr as Shift object
+     * @return String formatted string of the shift object
+     */
     public static String convertShiftToString(Shift shiftStr)
     {
         return  String.format("%02d/%02d/%02d,%s,%s,%s",
-                shiftStr.shiftDate.getDay(),
-                shiftStr.shiftDate.getMonth(),
-                shiftStr.shiftDate.getYear(),
-                shiftStr.startTime,
+                shiftStr.ShiftDate.getDay(),
+                shiftStr.ShiftDate.getMonth(),
+                shiftStr.ShiftDate.getYear(),
+                shiftStr.StartTime,
                 shiftStr.finishTime,
                 HoursCalc.convertNumToHourFormat(shiftStr.totalTime)
                 );
     }
+
+    /**
+     * This method converts formatted shift (as string) to a shift object
+     * This Method should be used when Database manger loads the shift from database
+     * @param shiftStr as string
+     * @return Shift Shift Object
+     */
     public static Shift convertStringToShift(String shiftStr)
     {
         String[] items = shiftStr.split(",");
@@ -200,10 +248,10 @@ public class DataBaseManager
         int day = Integer.valueOf(dateArr[0]);
         int month = Integer.valueOf(dateArr[1]);
         int year = Integer.valueOf(dateArr[2]);
-        shift.shiftDate = new DateTime(day, month, year);
+        shift.ShiftDate = new DateTime(day, month, year);
 
         //put the shift strings
-        shift.startTime = items[1];
+        shift.StartTime = items[1];
         shift.finishTime = items[2];
 
         //parse the start time string to integers
@@ -211,7 +259,7 @@ public class DataBaseManager
         if(startTimeArr.length != 2)
             return null;
 
-        shift.startHour = Integer.valueOf(startTimeArr[0]);
+        shift.StartHour = Integer.valueOf(startTimeArr[0]);
         shift.startMinute = Integer.valueOf(startTimeArr[1]);
 
         //parse the finish time string to integers
@@ -219,7 +267,7 @@ public class DataBaseManager
         if(startTimeArr.length != 2)
             return null;
 
-        shift.finishHour = Integer.valueOf(finishTimeArr[0]);
+        shift.FinishHour = Integer.valueOf(finishTimeArr[0]);
         shift.finishMinute = Integer.valueOf(finishTimeArr[1]);
 
         //parse the total hour and put in the Shift object
@@ -228,18 +276,30 @@ public class DataBaseManager
 
         return shift;
     }
+
+    /**
+     * This method converts the shift object to formatted string to be displayed
+     * @param shift as Shift object
+     * @return String shift to view as string
+     */
     public static String getShiftAsStringToView(Shift shift)
     {
         String totalTimeStr = HoursCalc.convertNumToHourFormat(shift.totalTime);
         return String.format("%02d/%02d/%d | %s - %s | %s - %s",
-                shift.shiftDate.getDay(),
-                shift.shiftDate.getMonth(),
-                shift.shiftDate.getYear(),
-                shift.startTime ,
+                shift.ShiftDate.getDay(),
+                shift.ShiftDate.getMonth(),
+                shift.ShiftDate.getYear(),
+                shift.StartTime,
                 shift.finishTime ,
                 "סך הכול",
                 totalTimeStr );
     }
+
+    /**
+     * This method converts the shift as string to view to formatted string in database format
+     * @param shiftAsStringToView as String
+     * @return String shift as string in database raw format to be saved in the database later
+     */
     public static String convertShiftAsStringToView_ToDataBaseString(String shiftAsStringToView)
     {
         String[] items = shiftAsStringToView.split(" ");
@@ -252,6 +312,13 @@ public class DataBaseManager
 
         return String.format("%s,%s,%s,%s", shiftDateAsString, startTime, finishTime, toatlTimeAsString);
     }
+
+    /**
+     * This method is responsible to sort the Shift array
+     * This method uses the Bubble sorting
+     * @param shiftsArray as Shift[]
+     * @return Shift[] sorted shifts
+     */
     private Shift[] sortShiftsArray(Shift[] shiftsArray)
     {
         Shift[] newArray = new Shift[shiftsArray.length];
@@ -261,7 +328,7 @@ public class DataBaseManager
             int cnt = 0;
             for(int j =0 ; j<shiftsArray.length; j++)
             {
-                if(shiftsArray[i].shiftDate.getDay() > shiftsArray[j].shiftDate.getDay())
+                if(shiftsArray[i].ShiftDate.getDay() > shiftsArray[j].ShiftDate.getDay())
                     cnt++;
             }
             tempArray[i] = cnt;
@@ -271,31 +338,39 @@ public class DataBaseManager
         for(int i=0; i<newArray.length; i++)
         {
             newArray[i] = new Shift();
-            newArray[i].shiftDate = new DateTime();
+            newArray[i].ShiftDate = new DateTime();
         }
         //use the temp array fo find the correct index of each shift
         for(int i=0; i<newArray.length; i++)
         {
-            newArray[tempArray[i]].shiftDate._year = shiftsArray[i].shiftDate._year;
-            newArray[tempArray[i]].shiftDate._month = shiftsArray[i].shiftDate._month;
-            newArray[tempArray[i]].shiftDate._day = shiftsArray[i].shiftDate._day;
-            newArray[tempArray[i]].startTime = shiftsArray[i].startTime;
+            newArray[tempArray[i]].ShiftDate.mYear = shiftsArray[i].ShiftDate.mYear;
+            newArray[tempArray[i]].ShiftDate.mMonth = shiftsArray[i].ShiftDate.mMonth;
+            newArray[tempArray[i]].ShiftDate.mDay = shiftsArray[i].ShiftDate.mDay;
+            newArray[tempArray[i]].StartTime = shiftsArray[i].StartTime;
             newArray[tempArray[i]].finishTime = shiftsArray[i].finishTime;
             newArray[tempArray[i]].totalTime = shiftsArray[i].totalTime;
-            newArray[tempArray[i]].finishHour = shiftsArray[i].finishHour;
+            newArray[tempArray[i]].FinishHour = shiftsArray[i].FinishHour;
             newArray[tempArray[i]].finishMinute = shiftsArray[i].finishMinute;
             newArray[tempArray[i]].startMinute = shiftsArray[i].startMinute;
-            newArray[tempArray[i]].startHour = shiftsArray[i].startHour;
+            newArray[tempArray[i]].StartHour = shiftsArray[i].StartHour;
         }
         return newArray;
     }
+
+    /**
+     * This method is responsible to sort the files names (the database files names)
+     * this method is sorting the files according to the date (name) of the file
+     * This method uses the Bubble sorting
+     * @param filesNames as String[]
+     * @return String[] sorted shifts
+     */
     private String[] sortFilesNames(String[] filesNames)
     {
         DateTime[] dateTimeArray = new DateTime[filesNames.length];
         //each string into the array should contains string in this format : 11/2016
         for(int i=0; i<filesNames.length; i++)
         {
-            //parse string to 2 int's
+            //parse string to 2 int'mSettings
             String[] ints = filesNames[i].split("/");
             if(ints.length != 2)
                 return null;

@@ -3,17 +3,24 @@ package com.example.jubransh.workingtime;
 import java.util.Date;
 
 /**
- * Created by jubransh on 11/16/2016.
+ * Structure class contains the structure of the Shift
+ *      shift date
+ *      start time
+ *      end time
+ *      total time
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
-
 public class Shift
 {
-    public DateTime shiftDate;
-    public int startHour;
+    public DateTime ShiftDate;
+    public int StartHour;
     public int startMinute;
-    public int finishHour;
+    public int FinishHour;
     public int finishMinute;
-    public String startTime;
+    public String StartTime;
     public String finishTime;
     public double totalTime;
 }

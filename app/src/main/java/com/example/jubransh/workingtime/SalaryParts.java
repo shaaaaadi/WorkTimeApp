@@ -1,9 +1,12 @@
 package com.example.jubransh.workingtime;
 
 /**
- * Created by jubransh on 1/7/2017.
+ * Structure class contains all the salary partss, taxes, and components
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
-
 public class SalaryParts
 {
     public double NotFixedSalary;

@@ -1,46 +1,58 @@
 package com.example.jubransh.workingtime;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
+/**
+ * This activity is calculator activity supporting basic math operations
+ * extends standard android activity
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
+ */
 public class CalculatorActivity extends Activity implements View.OnClickListener
 {
-    TextView viewScreen;
-    boolean isToStratFromScratch;
+    TextView mViewScreen;
+    boolean mIsToStartFromScratch;
 
+    /**
+     * Creating all the GUI objects,
+     * initializing all the GUI objects listeners,
+     * filling the start time / end time automatically if needed (related to what configured in the settings)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
 
-        isToStratFromScratch = true;
-        viewScreen = (TextView) findViewById(R.id.viewScreen);
+        mIsToStartFromScratch = true;
+        mViewScreen = (TextView) findViewById(R.id.viewScreen);
     }
 
+    /**
+     * overriding the GUI onClick events, and decide what to do when clicking on each calc button
+     */
     @Override
     public void onClick(View v)
     {
         Button b = (Button)v;
         String currentButtonText = b.getText().toString();
-        String currentTextInViewScreen = viewScreen.getText().toString();
+        String currentTextInViewScreen = mViewScreen.getText().toString();
 
         if(currentButtonText.equals("AC") && currentTextInViewScreen.length() != 0)
         {
-            viewScreen.setText("");
+            mViewScreen.setText("");
             return;
         }
         else if(currentButtonText.equals("AC"))
             return;
 
         if(currentButtonText.equals("C") && currentTextInViewScreen.length() != 0)
-            viewScreen.setText(currentTextInViewScreen.substring(0,currentTextInViewScreen.length()-1));
+            mViewScreen.setText(currentTextInViewScreen.substring(0,currentTextInViewScreen.length()-1));
         else if (currentButtonText.equals("C"))
             return;
 
@@ -48,21 +60,21 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         {
             try
             {
-                double res = eval(viewScreen.getText().toString());
-                viewScreen.setText(Double.toString(res));
+                double res = eval(mViewScreen.getText().toString());
+                mViewScreen.setText(Double.toString(res));
             }
             catch (Exception ex)
             {
-                viewScreen.setText(ex.getMessage());
+                mViewScreen.setText(ex.getMessage());
             }
-            isToStratFromScratch = true;
+            mIsToStartFromScratch = true;
         }
         else
         {
-            if(isToStratFromScratch)
-                viewScreen.setText("");
-            isToStratFromScratch = false;
-            viewScreen.setText(viewScreen.getText().toString() + currentButtonText);
+            if(mIsToStartFromScratch)
+                mViewScreen.setText("");
+            mIsToStartFromScratch = false;
+            mViewScreen.setText(mViewScreen.getText().toString() + currentButtonText);
         }
 
     }
@@ -81,7 +93,13 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         return true;
     }*/
 
-    private  double eval(final String str)
+    /**
+     * This is method calculate math expression
+     * this method parses the string and extract it to operations
+     * @param str math expression as string
+     * @return double, the result of the calculation.
+     */
+    private double eval(final String str)
     {
         try
         {

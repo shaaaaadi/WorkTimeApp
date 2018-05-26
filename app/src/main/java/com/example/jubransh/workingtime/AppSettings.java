@@ -2,12 +2,8 @@ package com.example.jubransh.workingtime;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,21 +14,26 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * this activity is used for the application settings,
+ * via this activity user can set shifts, salary, notifications and location settings
+ * extends standard android activity
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
+ */
 public class AppSettings extends Activity {
     int[] workDays;
     String appSettingsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Work_Time_Settings";
@@ -77,9 +78,14 @@ public class AppSettings extends Activity {
         }
     }
 
+    /**
+     * Creating all the GUI objects,
+     * initializing all the GUI objects listeners,
+     * loading the current settings from the database
+     *
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_settings);
 
@@ -166,7 +172,7 @@ public class AppSettings extends Activity {
 
         //Set the location settings
         locationRadius.setText(Double.toString(settings.getLocationRadius()));
-        setLocationObjectsVisability(useLocation.isChecked());
+        setLocationObjectsVisibility(useLocation.isChecked());
 
         //set the work days checkboxes according to the settings database
         workDays = settings.getWorkDays();
@@ -218,7 +224,7 @@ public class AppSettings extends Activity {
                 {
                     configure_GPS(false);
                 }
-                setLocationObjectsVisability(useLocation.isChecked());
+                setLocationObjectsVisibility(useLocation.isChecked());
                 //Intent in = new Intent(getApplicationContext(), MyLocationService.class);
                 //if(isChecked)
                 //    startService(in);
@@ -345,7 +351,6 @@ public class AppSettings extends Activity {
             {}
         });
 
-
         mailAddress.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s)
@@ -420,18 +425,33 @@ public class AppSettings extends Activity {
         });
 
     }
+
+    /**
+    * overriding the back button on click event
+    */
     @Override
     public void onBackPressed()
     {
         backToMainActivity();
     }
 
+    /**
+     * This is method back to the main activity and destroy the current one
+     * @return Nothing.
+     */
     private void backToMainActivity()
     {
         finish();
         Intent myIntent = new Intent(AppSettings.this, MainActivity.class);
         startActivity(myIntent);
     }
+
+    /**
+     * This is method is responsible to update the work days in the data base
+     * @param dayOfWeek which day of the week user wants to update
+     * @param isChecked boolean which refers to if the day (param1) is a work day or day off
+     * @return Nothing.
+     */
     private void modifyWorkDays(int dayOfWeek, boolean isChecked)
     {
         //converting array to list
@@ -467,22 +487,13 @@ public class AppSettings extends Activity {
         //writing the modified array to the database
         settings.setWorkDays(workDays);
     }
-    private void showHelpDialog(String messageBody)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(AppSettings.this);
-        builder.setMessage(messageBody)
-                .setPositiveButton("הבנתי", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
 
-    private void setLocationObjectsVisability(boolean isLocationEnabled)
+    /**
+     * This is method is responsible to change the GUI object on the fly according to the location Mode
+     * @param isLocationEnabled setting the GUI object is according to this boolean
+     * @return Nothing.
+     */
+    private void setLocationObjectsVisibility(boolean isLocationEnabled)
     {
         locationRadius.setEnabled(!isLocationEnabled);
         locationRadiusTextView.setVisibility(isLocationEnabled ? View.GONE : View.VISIBLE);
@@ -490,6 +501,13 @@ public class AppSettings extends Activity {
         locationSettingsLayout.setVisibility(isLocationEnabled ? View.GONE : View.VISIBLE);
         useLocationHelpMessage.setVisibility(isLocationEnabled ? View.VISIBLE : View.INVISIBLE);
     }
+
+    /**
+     * This is method is responsible to set the GPS Mode
+     * this method should grant Location permissions if needed.
+     * @param isToEnable enable or disable gps service.
+     * @return Nothing.
+     */
     void configure_GPS(boolean isToEnable)
     {
         // first check for permissions
@@ -514,5 +532,4 @@ public class AppSettings extends Activity {
         else
            stopService(in);
     }
-
 }

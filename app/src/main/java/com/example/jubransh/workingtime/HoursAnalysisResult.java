@@ -1,7 +1,11 @@
 package com.example.jubransh.workingtime;
 
 /**
- * Created by jubransh on 1/13/2017.
+ * Structure class contains the result of the Hours analysis
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
 
 public class HoursAnalysisResult

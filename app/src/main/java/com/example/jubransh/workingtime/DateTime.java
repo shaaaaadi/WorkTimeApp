@@ -2,29 +2,29 @@ package com.example.jubransh.workingtime;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
- * Created by jubransh on 11/15/2016.
+ * This class is a DateTime wrapper Class contains some android bugs workarounds
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
  */
-
 public class DateTime
 {
-    int _dayOfWeek;
-    int _day;
-    int _month;
-    int _year;
+    int mDay;
+    int mMonth;
+    int mYear;
 
-    int _hour;
-    int _minute;
+    int mHour;
+    int mMinute;
 
+    /** Class Constructor**/
     public DateTime(int dd, int mm, int yyyy)
     {
-        _day = dd;
-        _month = mm;
-        _year = yyyy;
+        mDay = dd;
+        mMonth = mm;
+        mYear = yyyy;
     }
 
     public DateTime()
@@ -32,53 +32,70 @@ public class DateTime
         Date date = new Date(System.currentTimeMillis()); // your date
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        _year = cal.get(Calendar.YEAR);
-        _month = cal.get(Calendar.MONTH) + 1;
-        _day = cal.get(Calendar.DAY_OF_MONTH);
-        _hour = cal.get(Calendar.HOUR_OF_DAY);
-        _minute = cal.get(Calendar.MINUTE);
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH) + 1;
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+        mHour = cal.get(Calendar.HOUR_OF_DAY);
+        mMinute = cal.get(Calendar.MINUTE);
     }
 
+    /**
+     * mYear Getter
+     * @return int, mYear.
+     */
     public int getYear()
     {
-        return _year;
-    }
-    public int getMonth()
-    {
-        return _month;
-    }
-    public int getDay()
-    {
-        return _day;
+        return mYear;
     }
 
+    /**
+     * mMonth Getter
+     * @return int, mMonth.
+     */
+    public int getMonth()
+    {
+        return mMonth;
+    }
+
+    /**
+     * mDay Getter
+     * @return int, mDay.
+     */
+    public int getDay()
+    {
+        return mDay;
+    }
+
+    /**
+     * mDay Getter
+     * @return int, mDay.
+     */
     public int getCurrentHour()
     {
-        return _hour;
+        return mHour;
     }
+
+    /**
+     * mDay Getter
+     * @return int, mDay.
+     */
     public int getCurrentMinute()
     {
-        return _minute;
+        return mMinute;
     }
-    public  String getCurrentMonthAsString()
-    {
-        switch (_month)
-        {
-            case 1: return "January";
-            case 2: return "February ";
-            case 3: return "March";
-            case 4: return "April";
-            case 5: return "May";
-            case 6: return "June";
-            case 7: return "July";
-            case 8: return "August";
-            case 9: return "September";
-            case 10: return "October ";
-            case 11: return "November";
-            case 12: return "December";
-            default: return "None";
-        }
-    }
+
+    /**
+     * This static method parses int number to string Month
+     *      1 : "January"
+     *      2 : "February"
+     *      3 : "March"
+     *      .
+     *      .
+     *      .
+     *      12 : "December"
+     * @param month number as int
+     * @return string, month name.
+     */
     public static String getMonthString(int month)
     {
         switch (month)
@@ -98,6 +115,12 @@ public class DateTime
             default:    return "None";
         }
     }
+
+    /**
+     * This static method parses the string of the Month to int (from 1 - 12)
+     * @param month name as string
+     * @return int, month as int.
+     */
     public static int getMonthInt(String month)
     {
         switch (month)
@@ -117,22 +140,4 @@ public class DateTime
             default:            return 0;
         }
     }
-    public static String getNextMonthYear(String currentMonth, int currentYear)
-    {
-        String nextMonthString;
-        int yearToreturn = currentYear;
-        int nextMonth = getMonthInt(currentMonth);
-
-        if(nextMonth == 12) //next month will be in the next year
-        {
-            yearToreturn ++;
-            nextMonthString = getMonthString(1);
-            return String.format("%s_%s", nextMonthString, yearToreturn);
-        }
-        nextMonth++;
-        nextMonthString = getMonthString(nextMonth);
-        return String.format("%s_%s", nextMonthString, yearToreturn);
-    }
-
-
 }

@@ -20,9 +20,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * this activity is the main activity,
+ * in this main activity you can see the current month shift or select another month to view it shifts
+ * from this activity you can navigate to
+ *      1. Add new shift
+ *      2. open calculator
+ *      3. open settings activity
+ *      4. exit
+ * extends standard android activity
+ *
+ * @author  Shadi Jubran
+ * @version 1.0
+ * @since   01/09/2017
+ */
 public class MainActivity extends Activity
 {
-    boolean _mainActivityStarted = false;
     Button  addButton,
             openTimerActivity,
             exitAppButton,
@@ -48,6 +61,12 @@ public class MainActivity extends Activity
     boolean isToViewFixedSalary, isToViewNotFixedSalary;
     Bundle _bundle;
 
+    /**
+     * Creating all the GUI objects,
+     * initializing all the GUI objects listeners,
+     * loading the current month shifts from the database
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -228,12 +247,22 @@ public class MainActivity extends Activity
             }
         });
     }
+
+    /**
+     * overriding the back button on click event
+     */
     @Override
     public void onBackPressed()
     {
         showExitDialog();
     }
-    //deleting shift
+
+    /**
+     * This is method is responsible to delete shift from data base
+     * after verifying the delete operation be prompting the user
+     * @param shiftRowAsInView
+     * @return Nothing.
+     */
     private void showDeleteDialog(final String shiftRowAsInView)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -264,6 +293,12 @@ public class MainActivity extends Activity
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    /**
+     * This is method is responsible to view the analysis result
+     * @param hAR - the result of the analysis
+     * @return Nothing.
+     */
     private void showAnalysisDialog(HoursAnalysisResult hAR)
     {
         String message;
@@ -292,6 +327,12 @@ public class MainActivity extends Activity
         }
         Utils.showHelpDialog(MainActivity.this, message, getString(R.string.close));
     }
+
+    /**
+     * Exit Application method - will exit the app and destroy all the sources
+     * after verifying the Exit operation be prompting the user
+     * @return Nothing.
+     */
     private void showExitDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -314,13 +355,21 @@ public class MainActivity extends Activity
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    /**
+     * This is method is responsible to view the analysis result into the ListView
+     * @param listView - the list view where the shifts should be displayed
+     * @param month - month to load from data base
+     * @param year - year to load from data base
+     * @return Shift array.
+     */
     private Shift[] loadMonthShiftsFromDB(ListView listView, TextView totalTimeTextView, int month, int year)
     {
         //Load From Data Base
         loadedShifts = dBM.loadMonthShifts(month, year);
         if(loadedShifts == null)
         {
-            if(dBM.errorType == Types.DB_ERROR.CORRUPTED_FILE)
+            if(dBM.mErrorType == Types.DB_ERROR.CORRUPTED_FILE)
             {
                 showErrorToast(getString(R.string.damaged_database_error_msg), true);
                 //Toast.makeText(getApplicationContext(), "Corrupted DataBase File", Toast.LENGTH_LONG).show();
@@ -390,27 +439,55 @@ public class MainActivity extends Activity
 
         return loadedShifts;
     }
+
+    /**
+     * this method opens the timer activity
+     * @return Nothing.
+     */
     private  void openTimerActivity()
     {
         finish();
         Intent myIntent = new Intent(MainActivity.this, TimerActivity.class);
         startActivity(myIntent);
     }
+
+    /**
+     * this method opens the Add new record activity
+     * @return Nothing.
+     */
     private void openAddNewRecordActivity()
     {
         finish();
         Intent myIntent = new Intent(MainActivity.this, AddNewRecordActivity.class);
         startActivity(myIntent);
     }
+
+    /**
+     * this method opens the calculator activity
+     * @return Nothing.
+     */
     private void openCalculatorActivity()
     {
         Intent myIntent = new Intent(MainActivity.this, CalculatorActivity.class);
         startActivity(myIntent);
     }
+
+    /**
+     * this method exits the application
+     * @return Nothing.
+     */
     private void exitApplication()
     {
         finish();
     }
+
+    /**
+     * This method selects the current month and set the spinner month to the current
+     * it's called from the onCreate() method
+     * @param month - the month
+     * @param month - the Year
+     * @return Nothing.
+     */
     private void selectCurrentMonth(int month, int year)
     {
         String dateFormat = String.format("%02d/%d", month, year);
@@ -428,15 +505,27 @@ public class MainActivity extends Activity
         }
 
     }
+
+    /**
+     * This method loads the List Of All Available months In DataBase
+     * @return Nothing.
+     */
     private void updateMonthsSpinner()
     {
-        //Load List Of All Available months In DataBase
         String[] monthsShifts = dBM.loadAllFilesNamesAsNumeric();
         monthsSpinner = (Spinner)findViewById(R.id.monthsSpinner);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, monthsShifts);
 
         monthsSpinner.setAdapter(adapter);
     }
+
+    /**
+     * This method selects the current month and set the spinner month to the current
+     * it's called from the onCreate() method
+     * @param subject - the subject of the mail
+     * @param body - the message body
+     * @return Nothing.
+     */
     protected void sendEmail(String subject, String body)
     {
         String[] TO = {settings.getMail()};
@@ -462,7 +551,6 @@ public class MainActivity extends Activity
                     "There is no email client installed.", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void showErrorToast(String errorMessage, boolean isLong)
     {
         LayoutInflater inflater = getLayoutInflater();
@@ -474,5 +562,4 @@ public class MainActivity extends Activity
         toast.setView(layout);
         toast.show();
     }
-
 }

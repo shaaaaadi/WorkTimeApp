@@ -25,6 +25,12 @@ public class TimerActivity extends Activity {
     String afterStartMessage = String.format("%s\n%s","התחלת משמרת חדשה." ,"ברגע שאתה לוחץ על סיים משמרת תתווסף משמרת חדשה לרשימה של המשמרות של החודש הנוכחית");
     String afterStopMessage = String.format("%s\n%s","אין משמרת פעילה כרגע!" ,"לחץ על התחל משמרת כדי להתחיל משמרת חדשה");
 
+    /**
+     * Creating all the GUI objects,
+     * initializing all the GUI objects listeners,
+     * decide what is the allowed operation (start shift timer / stop shift timer) according to
+     * what written in the data base
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -87,17 +93,30 @@ public class TimerActivity extends Activity {
         });
     }
 
+    /**
+     * overriding the back button on click event
+     */
     @Override
     public void onBackPressed() {
         backToMainActivity();
     }
 
+    /**
+     * This is method back to the main activity and destroy the current one
+     * @return Nothing.
+     */
     private void backToMainActivity()
     {
         finish();
         Intent myIntent = new Intent(TimerActivity.this, MainActivity.class);
         startActivity(myIntent);
     }
+
+    /**
+     * This is method stops the timer by writing stop to the data base
+     * this method saves the shift after the stop to the database
+     * @return Nothing.
+     */
     private void stopShift()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(TimerActivity.this);
